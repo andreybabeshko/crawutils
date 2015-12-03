@@ -1,0 +1,34 @@
+<project>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <path id="classpath">
+        <fileset dir="${basedir}/">
+            <include name="lib/*.jar" />
+        </fileset>
+    </path>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" classpathref="classpath"/>
+    </target>
+
+    <target name="jar" depends="clean, compile">
+        <copy todir="build/jar/" failonerror="false">
+            <fileset dir="lib" includes="**/*.jar" />
+        </copy>
+
+        <copy file="connection.properties" todir="build/jar/" />
+
+        <jar destfile="build/jar/UpdateNutchHistory.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="com.digitallyinspired.IndexAdapter"/>
+                <attribute name="Class-Path" value="bson-3.0.4.jar mongodb-driver-3.0.4.jar mongodb-driver-core-3.0.4.jar"/>
+                <attribute name="Manifest_Version" value="1.0"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
